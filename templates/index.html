@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Quality Check</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: white;
+        }
+        .container {
+            max-width: 450px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            color: black;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input {
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+        .safe { background-color: #d4edda; color: #155724; }
+        .unsafe { background-color: #f8d7da; color: #721c24; }
+        .learn-more {
+            color: #0072ff;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 500px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            color: black;
+        }
+        .modal h3 { color: #0072ff; }
+        .modal p { font-size: 14px; }
+        .modal .close {
+            display: block;
+            text-align: right;
+            color: red;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>💧 Water Quality Check</h2>
+        <form id="waterForm">
+            <input type="number" step="0.1" id="ph" placeholder="Enter pH Level (6.5 - 8.5)" required>
+            <input type="number" step="0.1" id="turbidity" placeholder="Enter Turbidity (0 - 5 NTU)" required>
+            <input type="number" id="tds" placeholder="Enter TDS (0 - 500 ppm)" required>
+            <input type="email" id="email" placeholder="Enter Your Email" required>
+            <button type="submit">Check Water Quality</button>
+        </form>
+
+        <div id="result" class="result"></div>
+        
+        <!-- Learn More Link -->
+        <p class="learn-more" onclick="openModal()">Learn More About Water Quality</p>
+    </div>
+
+    <!-- Modal Pop-up -->
+    <div id="infoModal" class="modal">
+        <span class="close" onclick="closeModal()">✖</span>
+        <h3>Understanding Water Quality</h3>
+        <p><strong>pH Level:</strong> Water should have a pH between 6.5 and 8.5. Too acidic or too alkaline water can be harmful.</p>
+        <p><strong>Turbidity:</strong> Measured in NTU (Nephelometric Turbidity Units), turbidity should be below 5 to ensure clarity and safety.</p>
+        <p><strong>TDS (Total Dissolved Solids):</strong> Safe drinking water should have TDS below 500 ppm for good taste and health.</p>
+    </div>
+
+    <script>
+        document.getElementById("waterForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let ph = document.getElementById("ph").value;
+            let turbidity = document.getElementById("turbidity").value;
+            let tds = document.getElementById("tds").value;
+            let email = document.getElementById("email").value;
+
+            fetch(`/check_water?ph=${ph}&turbidity=${turbidity}&tds=${tds}&email=${email}`)
+            .then(response => response.json())
+            .then(data => {
+                let resultDiv = document.getElementById("result");
+                resultDiv.innerHTML = `
+                    <p><strong>Status:</strong> ${data.status}</p>
+                    <p><strong>Safety Percentage:</strong> ${data.safety_percentage}%</p>
+                    <p><strong>Message:</strong> ${data.message}</p>
+                `;
+                resultDiv.className = data.status === "Safe" ? "result safe" : "result unsafe";
+                resultDiv.style.display = "block";
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
+        function openModal() {
+            document.getElementById("infoModal").style.display = "block";
+        }
+        function closeModal() {
+            document.getElementById("infoModal").style.display = "none";
+        }
+    </script>
+
+</body>
+
+
+
+
+
+
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI Clean Water Program</h1>
+        <p>Using AI to provide clean and safe drinking water for communities worldwide.</p>
+    </div>
+
+</body>
+</html>
