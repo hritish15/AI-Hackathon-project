@@ -33,26 +33,31 @@ def predict_water_quality(ph, turbidity, tds):
     
     return status, safety_percentage
 
+import smtplib
+
 def send_alert_email(receiver_email, status, safety_percentage):
     """Sends an email alert with water safety percentage to a user-specified email"""
     sender_email = "hritishasapu@gmail.com"
-    password = "Anushri@17"
+    password = "Anushri@17"  # Use Google App Password
+
+    subject = "🚰 Water Quality Report"
+    message = f"""Subject: {subject}\n\n
+    💧 Water Quality Status: {status}
+    📊 Safety Percentage: {safety_percentage}%
     
-    subject = "Water Quality Report"
-    message = f"""Subject: {subject}\n\nWater Quality Status: {status}\nSafety Percentage: {safety_percentage}%\n\n"""
-    if status == "Unsafe":
-        message += "⚠️ The water is not safe for drinking. Please purify it before use."
-    else:
-        message += "✅ The water is safe to drink."
-    
+    {'⚠️ Unsafe! Please purify before use.' if status == "Unsafe" else '✅ Safe to drink!'}
+    """
+
     try:
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message)
         server.quit()
-    except:
-        print("Email alert failed")
+        print(f"✅ Email successfully sent to {receiver_email}")
+    except Exception as e:
+        print(f"❌ Email failed to send: {e}")
+
 
 #def voice_alert(message):
  #   """Text-to-Speech (TTS) alert"""
@@ -71,15 +76,16 @@ def check_water():
     ph = float(request.args.get("ph", random.uniform(6, 9)))
     turbidity = float(request.args.get("turbidity", random.uniform(0, 10)))
     tds = float(request.args.get("tds", random.uniform(100, 600)))
-    receiver_email = request.args.get("email", "user_email@gmail.com")
+    receiver_email = request.args.get("email")
+
+    if not receiver_email:
+        return jsonify({"error": "Email is required"}), 400
 
     status, safety_percentage = predict_water_quality(ph, turbidity, tds)
     message = f"💧 Water Quality: {status} ({safety_percentage}% Safe)"
     
     send_alert_email(receiver_email, status, safety_percentage)
-    #voice_alert(message)
     
     return jsonify({"ph": ph, "turbidity": turbidity, "tds": tds, "status": status, "safety_percentage": safety_percentage, "message": message})
-
 if __name__ == "__main__":
     app.run(debug=True)
