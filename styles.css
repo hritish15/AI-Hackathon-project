@@ -1,0 +1,280 @@
+/* Google Font for a modern look */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* Color Palette */
+:root {
+    --primary-color: #ff4081; /* Vibrant Pink */
+    --background-color: #ffe4e1; /* Soft Pink */
+    --text-color: #333;
+    --white: #fff;
+    --button-hover: #e91e63;
+    --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Reset & Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Page Background */
+body {
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 80px;
+}
+
+/* Header Styling */
+header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    text-align: center;
+    padding: 1.2em;
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 600;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Main Content Box */
+.container {
+    background-color: var(--white);
+    width: 90%;
+    max-width: 800px;
+    padding: 2em;
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Intro Container */
+.intro-container {
+    margin-bottom: 2em;
+}
+
+/* Chat Container Styling */
+.chat-container {
+    width: 100%;
+    margin-bottom: 2em;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.chat-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    background-color: var(--white);
+    padding: 1em;
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    margin-top: 20px;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.chat-output {
+    flex-grow: 1;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 1em;
+    margin-bottom: 1em;
+    background-color: #f9f9f9;
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    border-radius: 6px;
+}
+
+.chat-output p {
+    margin: 0.5em 0;
+    padding: 0.5em;
+    border-radius: 12px;
+    max-width: 80%;
+    display: flex;
+}
+
+.chat-output p strong {
+    display: block;
+    margin-bottom: 0.3em;
+}
+
+.chat-output p.user-message {
+    background-color: #f396dc; /* Light green for user messages */
+    align-self: flex-end;
+    justify-content: center;
+    text-align: center;
+}
+
+.chat-output p.ai-message {
+    background-color: #f2c2f4; /* White for AI messages */
+    align-self: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+input[type="text"] {
+    padding: 0.7em;
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s ease-in-out;
+}
+
+input[type="text"]:focus {
+    border-color: var(--primary-color);
+}
+
+button {
+    width: 100%;
+    padding: 0.7em;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: var(--button-hover);
+    transform: scale(1.05);
+}
+
+/* Survey Container */
+.survey-container {
+    margin-bottom: 2em;
+}
+
+/* Resources Container */
+.resources-container {
+    margin-bottom: 2em;
+}
+
+/* Survey Title */
+.survey-container h2 {
+    color: var(--primary-color);
+    margin-bottom: 1em;
+}
+
+/* Form Styling */
+.question {
+    text-align: left;
+    margin-bottom: 1em;
+}
+
+.question label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+select {
+    width: 100%;
+    padding: 0.7em;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s ease-in-out;
+}
+
+select:focus {
+    border-color: var(--primary-color);
+}
+
+/* Buttons */
+button {
+    width: 100%;
+    padding: 0.7em;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: var(--button-hover);
+    transform: scale(1.05);
+}
+
+/* Responsive Styling */
+@media (max-width: 600px) {
+    body {
+        padding-top: 100px;
+    }
+    .container {
+        width: 95%;
+        padding: 1.5em;
+    }
+    header {
+        font-size: 1.3rem;
+    }
+    button {
+        font-size: 0.9rem;
+    }
+}
+
+/* Flashcards Styling */
+.flashcards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.flashcard {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    padding: 1em;
+    margin: 10px;
+    width: 45%;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.flashcard h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5em;
+}
+
+.flashcard p {
+    color: var(--text-color);
+}
+
+.flashcard:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Styling for Flashcards */
+@media (max-width: 600px) {
+    .flashcard {
+        width: 100%;
+    }
+}
+body {
+    background: url("../static/image.jpg") no-repeat center center fixed;
+    background-size: cover;
+}

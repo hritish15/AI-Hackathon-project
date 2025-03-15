@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellbeing Survey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Wellbeing Survey</h1>
+    </header>
+
+    <div class="container">
+        <section class="survey-container">
+            <h2>Answer the following questions to assess your wellbeing:</h2>
+            <form id="wellbeing-survey" onsubmit="submitSurvey(event)">
+                <div class="question">
+                    <label for="question1">How often do you feel stressed?</label>
+                    <select id="question1" name="question1">
+                        <option value="1">Always</option>
+                        <option value="2">Often</option>
+                        <option value="3">Sometimes</option>
+                        <option value="4">Rarely</option>
+                        <option value="5">Never</option>
+                    </select>
+                </div>
+
+                <div class="question">
+                    <label for="question2">How satisfied are you with your social life?</label>
+                    <select id="question2" name="question2">
+                        <option value="1">Very Dissatisfied</option>
+                        <option value="2">Dissatisfied</option>
+                        <option value="3">Neutral</option>
+                        <option value="4">Satisfied</option>
+                        <option value="5">Very Satisfied</option>
+                    </select>
+                </div>
+
+                <div class="question">
+                    <label for="question3">How would you rate your overall mood?</label>
+                    <select id="question3" name="question3">
+                        <option value="1">Very Low</option>
+                        <option value="2">Low</option>
+                        <option value="3">Neutral</option>
+                        <option value="4">High</option>
+                        <option value="5">Very High</option>
+                    </select>
+                </div>
+
+                <button type="submit">Submit Survey</button>
+            </form>
+            
+            <button onclick="window.location.href='/'">Back to Home</button>
+        </section>
+
+        <section class="report-container">
+           <br><br> <h2>Your Wellbeing Report</h2>
+            <div id="wellbeing-report" class="wellbeing-report">
+                <p>After submitting the survey, you will receive a mood score and feedback based on your responses.</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function submitSurvey(event) {
+            event.preventDefault();
+            const formData = new FormData(document.getElementById('wellbeing-survey'));
+            const surveyData = {};
+            formData.forEach((value, key) => {
+                surveyData[key] = parseInt(value);
+            });
+
+            fetch('/submit_survey', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(surveyData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const reportContainer = document.getElementById('wellbeing-report');
+                reportContainer.innerHTML = `
+                    <p><strong>Your mood score is:</strong> ${data.mood_score}/15</p>
+                    <p><strong>Feedback:</strong> ${data.feedback}</p>
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

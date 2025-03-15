@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health & Wellbeing Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Mental Health & Wellbeing Hub</h1>
+    </header>
+
+
+
+    <div class="container">
+        <section class="chat-container">
+            <h2>Chat with Jude, Our AI Cognitive Therapist</h2>
+            <div class="chat-box">
+                <div id="chat-output" class="chat-output">
+                    <p class="ai-message"><strong>JudeAI:</strong><br>Hi, I'm here to help. How are you feeling today?</p>
+                </div>
+                <input type="text" id="user-input" placeholder="Ask me anything about mental health...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </section>
+
+        <section class="survey-container">
+            <h2>Your Wellbeing Survey</h2>
+            <div id="wellbeing-report" class="wellbeing-report">
+                <p>Take our survey to assess your mental health & wellbeing and get feedback based on your mood score.</p>
+                <button onclick="window.location.href='/survey'">Take the survey</button>
+            </div>
+        </section>
+
+        <section class="resources-container">
+            <h2>Wellbeing Resources</h2>
+            <p>Find out more about different tips for meditation to calm your mind: </p>
+            <button onclick="window.location.href='/meditation'">Meditation Tips</button>
+        </section>
+    </div>
+
+    <script>
+        let speechEnabled = true;
+
+        function sendMessage() {
+            let userMessage = document.getElementById("user-input").value;
+            let chatOutput = document.getElementById("chat-output");
+
+            if (userMessage.trim() !== "") {
+                chatOutput.innerHTML += `<p class="user-message"><strong>You:</strong><br>  ${userMessage}</p>`;
+                conversationHistory.push("You: " + userMessage); // Store user message
+
+                fetch('/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userMessage })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    let therapistResponse = data.response;
+                    chatOutput.innerHTML += `<p class="ai-message"><strong>JudeAI:</strong><br>${therapistResponse}</p>`;
+                    conversationHistory.push("Therapist: " + therapistResponse); // Store therapist response
+                    chatOutput.scrollTop = chatOutput.scrollHeight; // Auto-scroll to latest message
+                    document.getElementById("user-input").value = "";
+
+                    if (speechEnabled) {
+                        speak(therapistResponse);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    chatOutput.innerHTML += `<p class="ai-message"><strong>Therapist:</strong> Sorry, something went wrong.</p>`;
+                });
+            }
+        }
+
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(utterance);
+        }
+    </script>
+</body>
+</html>
